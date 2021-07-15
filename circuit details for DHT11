@@ -1,0 +1,18 @@
+Connections :
+
+DHT11 sensor and DC MOTOR : 
+
+Use a NPN Transistor
+•	Connect EMITTER to a terminal of motor
+•	Connect BASE to a resistor of 220ohm and connect it to pin 2 of Arduino
+•	Connect COLLECTOR to another terminal of motor
+Photoresistor :
+
+Connect one end of Photoresistor 5V
+Connect other end with a resistor of 220 ohm and also connect the same end with Arduino on Analog 1
+Connect the other end of resistor with GND
+
+LED
+Connect the Positive end of LED with a resistor and connect to 5V
+Connect the negative end to GND
+ 
