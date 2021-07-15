@@ -1,0 +1,132 @@
+Sensors used:
+1.	Photoresistor 
+2.	DHT11
+
+Photoresistor sensor will detect the amount of light present and turn on the LED if the amount of light is less than the threshold value
+Similarly, DHT11 sensor will sense the temperature around, and turn on the DC MOTOR (which can be converted to fan) if the temperature reaches the threshold value.
+
+Components required are available in excel sheet attached.
+
+  using DHT11 sensor
+
+#include "DHT.h"
+#define DHTPIN 2
+#define DHTTYPE DHT11
+
+DHT dht(DHTPIN, DHTTYPE);
+
+int sensorPin = 1;
+int sensorValuePhotoresistor = 0;
+void setup() {
+  Serial.begin(9600);
+  dht.begin(); // initialize the sensor
+  pinMode(4, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(2,INPUT);
+  dht.begin();
+}
+
+void loop() {
+//  digitalWrite(4, HIGH);
+      sensorValuePhotoresistor = analogRead(sensorPin);
+      Serial.println(sensorValuePhotoresistor);
+        if(sensorValuePhotoresistor<4)
+            {  digitalWrite(6, HIGH);
+            }
+            else{
+              digitalWrite(6, LOW);
+            }
+           
+  int tempC = dht.readTemperature();
+
+  // check if any reads failed
+  if (isnan(tempC)) {
+    Serial.println("Failed to read from DHT sensor!");
+  } else {
+  Serial.print("Temperature: ");
+    Serial.println(tempC);
+
+            if(tempC<29)
+            {
+              digitalWrite(4, LOW);
+
+            }
+          else{
+            digitalWrite(4, HIGH);
+          }
+
+  }
+
+
+    
+  }
+
+
+  using temperature  sensor
+
+
+// include the library code:
+#include <LiquidCrystal.h>
+
+// initialize the library with the numbers of the interface pins
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+int tempPin = 0;
+int sensor=6; //The output of PIR sensor connected to pin 7
+int sensor_value; //variable to hold read sensor value
+int motorPin = 9;
+int sensorPin = 1;
+int sensorValuePhotoresistor = 0;
+
+void setup() {
+  // set up the LCD's number of columns and rows:
+  lcd.begin(16, 2);
+  Serial.begin(9600); 
+  // Print a message to the LCD.
+  lcd.print("TEMPERATURE = ");
+   pinMode(motorPin, OUTPUT);
+  pinMode(7, OUTPUT);
+  pinMode(sensor,INPUT);
+}
+
+void loop() {
+  
+  lcd.setCursor(0, 0);
+  double temp = analogRead(tempPin);
+   temp = temp * 0.48828125;
+  temp=temp-49.5266;
+  
+  Serial.print("TEMPERATURE=");
+   lcd.setCursor(0, 1);
+  lcd.print(temp);
+  lcd.print("*C");
+  lcd.println();
+  Serial.println(temp);
+  //--------------------
+
+      sensorValuePhotoresistor = analogRead(sensorPin);
+  			if(sensorValuePhotoresistor<100)
+            {  digitalWrite(7, HIGH);
+            }
+            else{
+              digitalWrite(7, LOW);
+            }
+  
+            if(temp<30)
+            {
+              analogWrite(motorPin, 0);
+
+            }
+          else{
+            analogWrite(motorPin, 255);
+          }
+      
+
+  
+//analogWrite(motorPin, temp);
+  //lcd.println(sensorValuePhotoresistor);
+  
+}
+
+
+Refer this for including library :
+https://randomnerdtutorials.com/complete-guide-for-dht11dht22-humidity-and-temperature-sensor-with-arduino/#:~:text=Open%20your%20Arduino%20IDE%20and,the%20DHT%20library%20from%20Adafruit.
